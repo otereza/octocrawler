@@ -167,7 +167,7 @@ class CreateFeedCommand extends Command
             if($prod->special_price) {
                 $offer['price'] = $prod->special_price;
                 $offer['oldprice'] = $prod->regular_price;
-                $offer['special-price-end-date'] = $prod->special_price_end_date;
+                $offer['date-end'] = $prod->special_price_end_date;
             } else {
                 $offer['price'] = $prod->regular_price;
             }
