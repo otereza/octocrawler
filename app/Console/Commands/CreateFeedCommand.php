@@ -158,7 +158,7 @@ class CreateFeedCommand extends Command
             $offer['name'] = $prod->title;
             $offer['vendor'] = $prod->vendor;
             if(!empty($prod->description)) {
-                $offer['description'] = ['_cdata' => $prod->description];
+                $offer['description'] = ['_cdata' => mb_convert_encoding($prod->description, 'UTF-8', 'UTF-8')];
             }
             if(!empty($params)) {
                 $offer['param'] = $params;
