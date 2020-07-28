@@ -158,7 +158,7 @@ class CreateFeedCommand extends Command
             $offer['name'] = $prod->title;
             $offer['vendor'] = $prod->vendor;
             if(!empty($prod->description)) {
-                $offer['description'] = ['_cdata' => mb_convert_encoding($prod->description, 'UTF-8', 'UTF-8')];
+                $offer['description'] = ['_cdata' => $this->utf8replacer($prod->description)];
             }
             if(!empty($params)) {
                 $offer['param'] = $params;
@@ -178,4 +178,22 @@ class CreateFeedCommand extends Command
         return $res;
     }
 
+    private function utf8replacer($value)
+    {
+        $ret = "";
+        if (empty($value)) {
+            return $ret;
+        }
+        $length = strlen($value);
+        for ($i=0; $i < $length; $i++) {
+            $current = ord($value{$i});
+            if (($current == 0x9) || ($current == 0xA) || ($current == 0xD) || (($current >= 0x20) && ($current <= 0xD7FF)) || (($current >= 0xE000) && ($current <= 0xFFFD)) || (($current >= 0x10000) && ($current <= 0x10FFFF))) {
+                $ret .= chr($current);
+            }
+            else {
+                $ret .= "";
+            }
+        }
+        return $ret;
+    }
 }
